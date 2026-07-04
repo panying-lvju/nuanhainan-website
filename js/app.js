@@ -11,9 +11,9 @@ const state = {
 
 // 栏目配置
 const categories = {
-    yanglao: { title: '养老动态', icon: '👴' },
-    'ai-agent': { title: 'AI 智能体', icon: '🤖' },
-    hainan: { title: '海南热点', icon: '🌴' }
+    yanglao: { title: '养老动态', icon: '👴', key: 'yanglao' },
+    'ai-agent': { title: 'AI 智能体', icon: '🤖', key: 'ai_agent' },
+    hainan: { title: '海南热点', icon: '🌴', key: 'hainan' }
 };
 
 // 初始化
@@ -33,7 +33,8 @@ async function loadArticles(category) {
         const data = await response.json();
         
         // 小扣的格式：data.articles.yanglao = { title, url }
-        const articleData = data.articles[category] || {};
+        const key = categories[category]?.key || category;
+        const articleData = data.articles[key] || {};
         
         // 更新标题
         titleEl.textContent = articleData.title || categories[category].title;
