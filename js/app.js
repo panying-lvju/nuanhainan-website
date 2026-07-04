@@ -28,29 +28,32 @@ async function loadArticles(category) {
     const titleEl = document.getElementById('categoryTitle');
     
     try {
-        // 从 index.json 加载
+        // 从 index.json 加载（适配小扣的格式）
         const response = await fetch('data/index.json');
         const data = await response.json();
         
-        const articles = data[category] || [];
-        state.articles[category] = articles;
+        // 小扣的格式：data.articles.yanglao = { title, url }
+        const articleData = data.articles[category] || {};
         
         // 更新标题
-        titleEl.textContent = categories[category].title;
+        titleEl.textContent = articleData.title || categories[category].title;
         
-        // 渲染列表
-        if (articles.length === 0) {
+        // 渲染列表（小扣每天生成一篇，显示最新）
+        if (!articleData.url) {
             container.innerHTML = '<p class="no-articles">暂无文章</p>';
             return;
         }
         
-        container.innerHTML = articles.map(article => `
-            <div class="article-item" onclick="openArticle('${category}', '${article.file}')">
-                <div class="date">${article.date}</div>
-                <div class="title">${article.title}</div>
-                <div class="summary">${article.summary}</div>
+        // 从 Coze 链接获取 MD 文件名
+        const fileName = 'latest.md';
+        
+        container.innerHTML = `
+            <div class="article-item" onclick="openArticle('${category}', '${fileName}')">
+                <div class="date">${data.date || ''}</div>
+                <div class="title">${articleData.title}</div>
+                <div class="summary">点击查看今日${categories[category].title}</div>
             </div>
-        `).join('');
+        `;
         
     } catch (error) {
         console.error('加载文章失败:', error);
