@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暖海南 - 海南康养旅居资讯</title>
+    <link rel="stylesheet" href="css/style.css?v=202607040930">
+    <meta name="description" content="暖海南资讯网站 - 专注海南康养旅居">
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>🦅 暖海南</h1>
+            <p class="tagline">海南康养旅居资讯</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="switchTab('yanglao')">
+                <span class="icon">👴</span>
+                <span class="text">养老动态</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('ai-agent')">
+                <span class="icon">🤖</span>
+                <span class="text">AI 智能体</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('hainan')">
+                <span class="icon">🌴</span>
+                <span class="text">海南热点</span>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p class="brand">盘鹰养老</p>
+            <p class="contact">📞 18976001098</p>
+            <p class="address">📍 海南省陵水黎安镇·盘鹰书院</p>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <h2 class="category-title" id="categoryTitle">养老动态</h2>
+        <div class="articles" id="articlesContainer">
+            <p>加载中...</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>暖海南 | 服务运营：波纳乐活 | 咨询热线：18976001098</p>
+    </footer>
+
+    <script>
+        // 简化版 - 直接内联 JS，确保执行
+        console.log('[暖海南] JS 开始执行');
+        
+        async function loadArticles(category) {
+            console.log('[暖海南] 加载栏目:', category);
+            
+            const container = document.getElementById('articlesContainer');
+            const titleEl = document.getElementById('categoryTitle');
+            
+            try {
+                const response = await fetch('data/index.json');
+                const data = await response.json();
+                console.log('[暖海南] index.json:', data);
+                
+                const keyMap = { yanglao: 'yanglao', 'ai-agent': 'ai_agent', hainan: 'hainan' };
+                const key = keyMap[category];
+                const articleData = data.articles[key] || {};
+                
+                console.log('[暖海南] 文章数据:', articleData);
+                
+                titleEl.textContent = articleData.title || category;
+                
+                if (!articleData.url) {
+                    container.innerHTML = '<p>暂无文章</p>';
+                    return;
+                }
+                
+                // 直接读取 latest.md 并显示
+                const mdResponse = await fetch(`data/articles/${category}/latest.md`);
+                const mdText = await mdResponse.text();
+                console.log('[暖海南] MD 长度:', mdText.length);
+                
+                // 简单渲染：换行转<br>，# 转大标题
+                let html = mdText
+                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\n/g, '<br>');
+                
+                container.innerHTML = `<article style="font-size:18px;line-height:1.8;">${html}</article>`;
+                console.log('[暖海南] 渲染成功');
+                
+            } catch (error) {
+                console.error('[暖海南] 错误:', error);
+                container.innerHTML = `<p style="color:red;">加载失败：${error.message}</p>`;
+            }
+        }
+        
+        function switchTab(category) {
+            console.log('[暖海南] 切换栏目:', category);
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            loadArticles(category);
+        }
+        
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('[暖海南] DOM 加载完成');
+            loadArticles('yanglao');
+        });
+    </script>
+</body>
+</html>

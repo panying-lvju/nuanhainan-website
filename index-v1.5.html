@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暖海南 - 海南康养旅居资讯</title>
+    
+    <!-- Favicon（鹰 emoji） -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦅</text></svg>">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="暖海南资讯网站 - 专注海南康养旅居，提供养老动态、AI 智能体前沿、海南自贸港政策资讯">
+    <meta name="keywords" content="海南康养，旅居养老，暖海南，盘鹰养老，陵水旅居">
+    
+    <style>
+        /* ========== 黑白灰极简风格 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --border-color: #dddddd;
+            --accent-color: #333333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========== 左侧导航栏 ========== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--accent-color);
+            color: #ffffff;
+            padding: 40px 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            padding: 0 32px 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .logo h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .logo .tagline { font-size: 14px; color: rgba(255, 255, 255, 0.7); }
+
+        .nav-menu { list-style: none; padding: 0; flex: 1; }
+
+        .nav-item {
+            padding: 16px 32px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover { background: rgba(255, 255, 255, 0.08); }
+        .nav-item.active { background: rgba(255, 255, 255, 0.12); border-left-color: #ffffff; }
+        .nav-item .icon { font-size: 22px; width: 28px; text-align: center; }
+
+        .sidebar-footer {
+            padding: 24px 32px;
+            background: rgba(0, 0, 0, 0.15);
+            font-size: 13px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .sidebar-footer .brand { font-weight: 600; font-size: 15px; margin-bottom: 6px; color: #ffffff; }
+
+        /* ========== 主内容区 ========== */
+        .main-content {
+            margin-left: 280px;
+            padding: 60px 80px 80px;
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .category-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 48px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            color: var(--text-primary);
+        }
+
+        /* ========== 文章内容（Markdown 渲染）========== */
+        .article-content { max-width: 900px; }
+
+        .article-content h1 { font-size: 32px; font-weight: 600; margin: 48px 0 24px; line-height: 1.4; }
+        .article-content h2 { font-size: 26px; font-weight: 600; margin: 40px 0 20px; line-height: 1.4; }
+        .article-content h3 { font-size: 22px; font-weight: 600; margin: 32px 0 16px; line-height: 1.4; }
+        .article-content h4 { font-size: 18px; font-weight: 600; margin: 24px 0 12px; }
+        .article-content p { margin-bottom: 24px; color: var(--text-primary); line-height: 1.8; text-align: justify; }
+        .article-content strong { font-weight: 600; }
+        .article-content ul, .article-content ol { margin-bottom: 24px; padding-left: 32px; }
+        .article-content li { margin-bottom: 12px; line-height: 1.8; }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding: 16px 24px;
+            margin: 32px 0;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-style: italic;
+            border-radius: 0 4px 4px 0;
+        }
+        .article-content blockquote p { margin-bottom: 0; }
+
+        .article-content hr { border: none; border-top: 1px solid var(--border-color); margin: 48px 0; }
+        .article-content a { color: #4a90e2; text-decoration: none; border-bottom: 1px solid transparent; }
+        .article-content a:hover { border-bottom-color: #4a90e2; }
+
+        .article-content code {
+            background: var(--bg-secondary);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            font-size: 16px;
+            color: #e83e8c;
+        }
+
+        .article-content pre {
+            background: var(--bg-secondary);
+            padding: 24px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+        .article-content pre code { background: none; padding: 0; color: var(--text-primary); }
+
+        /* ========== 表格样式 ========== */
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 32px 0;
+            font-size: 16px;
+        }
+
+        .article-content th,
+        .article-content td {
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        .article-content th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .article-content tr:nth-child(even) { background: #fafafa; }
+        .article-content tr:hover { background: #f0f0f0; }
+
+        /* ========== 页脚 ========== */
+        .footer {
+            margin-left: 280px;
+            padding: 40px 80px;
+            background: var(--bg-secondary);
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            line-height: 1.8;
+        }
+
+        /* ========== 移动端适配 ========== */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--accent-color);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 44px;
+            height: 44px;
+        }
+
+        .menu-toggle span { display: block; width: 22px; height: 2px; background: #ffffff; margin: 5px 0; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.active { transform: translateX(0); }
+            .main-content, .footer { margin-left: 0; padding: 80px 24px 40px; }
+            .category-title { font-size: 26px; }
+            .article-content h1 { font-size: 26px; }
+            .article-content h2 { font-size: 22px; }
+            .article-content h3 { font-size: 18px; }
+            body { font-size: 16px; }
+        }
+
+        .loading { color: var(--text-secondary); padding: 40px 0; text-align: center; }
+        .error { color: #dc3545; padding: 40px 0; }
+    </style>
+</head>
+<body>
+    <!-- 移动端汉堡菜单 -->
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="菜单">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- 左侧导航栏（5 个栏目） -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>🦅 暖海南</h1>
+            <p class="tagline">海南康养旅居资讯</p>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="switchTab('yanglao', event)">
+                <span class="icon">👴</span>
+                <span class="text">养老动态</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('ai-agent', event)">
+                <span class="icon">🤖</span>
+                <span class="text">AI 智能体</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('hainan', event)">
+                <span class="icon">🌴</span>
+                <span class="text">海南热点</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('openclaw', event)">
+                <span class="icon">🔧</span>
+                <span class="text">OpenClaw 动态</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('xiaohongshu', event)">
+                <span class="icon">📕</span>
+                <span class="text">小红书动态</span>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p class="brand">盘鹰养老</p>
+            <p class="contact">📞 18976001098</p>
+            <p class="address">📍 海南省陵水黎安镇·盘鹰书院</p>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <h2 class="category-title" id="categoryTitle">养老动态</h2>
+        <div class="article-content" id="content">
+            <p class="loading">加载中...</p>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>暖海南 | 服务运营：波纳乐活 | 咨询热线：18976001098</p>
+        <p>© 2026 盘鹰养老 - 深耕海南康养旅居 16 年</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        console.log('[暖海南] V1.5 完整版初始化 - 5 栏目 + 表格渲染 + favicon');
+
+        // Markdown 渲染函数（支持表格）
+        function renderMarkdown(md) {
+            let html = md;
+
+            // 1. 标题
+            html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+            html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+            html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+            // 2. 粗体
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // 3. 引用块
+            html = html.replace(/^> (.*$)/gim, '<blockquote><p>$1</p></blockquote>');
+
+            // 4. 表格处理（在列表之前）
+            const tableRegex = /^(\|.*\|\r?\n)+/gm;
+            html = html.replace(tableRegex, function(match) {
+                const rows = match.trim().split(/\r?\n/);
+                let tableHtml = '<table><tbody>';
+                rows.forEach((row, index) => {
+                    const cells = row.split('|').filter((c, i) => i > 0 && i < row.split('|').length - 1);
+                    if (cells.length > 0) {
+                        const isHeader = cells.every(c => c.trim().match(/^[\s\-|]+$/));
+                        if (!isHeader) {
+                            const cellTag = index === 0 ? 'th' : 'td';
+                            const cellHtml = cells.map(c => `<${cellTag} style="padding: 8px 12px; border: 1px solid #ddd;">${c.trim()}</${cellTag}>`).join('');
+                            tableHtml += `<tr>${cellHtml}</tr>`;
+                        }
+                    }
+                });
+                tableHtml += '</tbody></table>';
+                return tableHtml;
+            });
+
+            // 5. 无序列表
+            html = html.replace(/^[*-] (.*$)/gim, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>\n?)+/gim, '<ul>$&</ul>');
+
+            // 6. 链接
+            html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+            // 7. 行内代码
+            html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+
+            // 8. 水平线
+            html = html.replace(/^---$/gim, '<hr>');
+
+            // 9. 换行转段落
+            html = html.replace(/\n\n+/g, '</p><p>');
+            html = '<p>' + html + '</p>';
+
+            // 10. 清理多余标签
+            html = html.replace(/<p><\/p>/g, '');
+            html = html.replace(/<p>(<h[1-6]>)/g, '$1');
+            html = html.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<ul>)/g, '$1');
+            html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<table>)/g, '$1');
+            html = html.replace(/(<\/table>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<blockquote>)/g, '$1');
+            html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
+
+            return html;
+        }
+
+        // 栏目配置
+        const categories = {
+            yanglao: { title: '养老动态', type: 'coze', key: 'yanglao' },
+            'ai-agent': { title: 'AI 智能体', type: 'coze', key: 'ai_agent' },
+            hainan: { title: '海南热点', type: 'coze', key: 'hainan' },
+            openclaw: { title: 'OpenClaw 动态', type: 'local', path: '今日内容/20260704/OpenClaw 动态.md' },
+            xiaohongshu: { title: '小红书动态', type: 'local', path: '今日内容/20260704/小红书动态.md' }
+        };
+
+        // 加载文章
+        async function loadArticle(category) {
+            console.log('[暖海南] 加载栏目:', category);
+
+            const content = document.getElementById('content');
+            const title = document.getElementById('categoryTitle');
+            const config = categories[category];
+
+            if (!config) {
+                content.innerHTML = '<p class="error">栏目配置不存在</p>';
+                return;
+            }
+
+            title.textContent = config.title;
+
+            try {
+                let md;
+
+                if (config.type === 'coze') {
+                    // Coze 链接类型（从 index.json 获取）
+                    const res = await fetch('data/index.json?t=' + Date.now());
+                    const data = await res.json();
+                    const article = data.articles[config.key] || {};
+
+                    if (!article.url) {
+                        content.innerHTML = '<p class="error">暂无内容</p>';
+                        return;
+                    }
+
+                    const mdRes = await fetch('data/articles/' + category + '/latest.md?t=' + Date.now());
+                    md = await mdRes.text();
+
+                } else if (config.type === 'local') {
+                    // 本地文件类型（从 GitHub 同步）
+                    const mdRes = await fetch(config.path + '?t=' + Date.now());
+                    if (!mdRes.ok) {
+                        content.innerHTML = '<p class="error">内容暂未发布</p>';
+                        return;
+                    }
+                    md = await mdRes.text();
+                }
+
+                console.log('[暖海南] MD 长度:', md.length);
+                const html = renderMarkdown(md);
+                content.innerHTML = html;
+                console.log('[暖海南] 渲染成功');
+
+            } catch (e) {
+                console.error('[暖海南] 错误:', e);
+                content.innerHTML = '<p class="error">加载失败：' + e.message + '</p>';
+            }
+        }
+
+        // 切换栏目
+        function switchTab(category, event) {
+            console.log('[暖海南] 切换栏目:', category);
+
+            document.querySelectorAll('.nav-item').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            loadArticle(category);
+
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.remove('active');
+        }
+
+        // 移动端菜单
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('active');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[暖海南] DOM 加载完成');
+            loadArticle('yanglao');
+        });
+    </script>
+</body>
+</html>

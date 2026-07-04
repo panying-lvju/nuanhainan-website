@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暖海南 - 海南康养旅居资讯</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.8;color:#222;background:#fff}
+        .sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:#333;color:#fff;padding:40px 0;overflow-y:auto}
+        .logo{padding:0 30px 30px;border-bottom:1px solid rgba(255,255,255,0.1)}
+        .logo h1{font-size:28px;margin-bottom:8px}
+        .tagline{font-size:14px;opacity:0.7}
+        .nav-menu{list-style:none;padding:20px 0}
+        .nav-item{padding:15px 30px;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:12px}
+        .nav-item:hover{background:rgba(255,255,255,0.1)}
+        .nav-item.active{background:rgba(255,255,255,0.2);border-left:4px solid #fff}
+        .nav-item .icon{font-size:24px}
+        .sidebar-footer{position:absolute;bottom:0;left:0;right:0;padding:30px;background:rgba(0,0,0,0.2);font-size:14px}
+        .sidebar-footer .brand{font-weight:bold;margin-bottom:8px;font-size:16px}
+        .main-content{margin-left:280px;padding:60px 80px;min-height:100vh}
+        .category-title{font-size:32px;margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid #333}
+        .article-content{max-width:900px}
+        .article-content h1{font-size:32px;margin:40px 0 20px}
+        .article-content h2{font-size:26px;margin:40px 0 20px}
+        .article-content h3{font-size:22px;margin:30px 0 15px}
+        .article-content p{margin-bottom:20px}
+        .article-content strong{font-weight:bold}
+        .article-content blockquote{border-left:4px solid #333;padding-left:20px;margin:20px 0;color:#666;font-style:italic}
+        .article-content a{color:#4a90e2;text-decoration:none}
+        .article-content a:hover{text-decoration:underline}
+        .footer{margin-left:280px;padding:40px 80px;background:#f5f5f5;text-align:center;font-size:14px;color:#666;border-top:1px solid #ddd}
+        .menu-toggle{display:none;position:fixed;top:20px;left:20px;z-index:1000;background:#333;border:none;padding:10px;cursor:pointer;border-radius:4px}
+        .menu-toggle span{display:block;width:25px;height:3px;background:#fff;margin:5px 0}
+        @media(max-width:768px){.menu-toggle{display:block}.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.main-content,.footer{margin-left:0;padding:80px 20px 40px}}
+        .loading{color:#666;padding:20px}
+        .error{color:red;padding:20px}
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo"><h1>🦅 暖海南</h1><p class="tagline">海南康养旅居资讯</p></div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="switchTab('yanglao')"><span class="icon">👴</span><span class="text">养老动态</span></li>
+            <li class="nav-item" onclick="switchTab('ai-agent')"><span class="icon">🤖</span><span class="text">AI 智能体</span></li>
+            <li class="nav-item" onclick="switchTab('hainan')"><span class="icon">🌴</span><span class="text">海南热点</span></li>
+        </ul>
+        <div class="sidebar-footer"><p class="brand">盘鹰养老</p><p class="contact">📞 18976001098</p><p class="address">📍 海南省陵水黎安镇·盘鹰书院</p></div>
+    </nav>
+    <main class="main-content">
+        <h2 class="category-title" id="categoryTitle">养老动态</h2>
+        <div class="article-content" id="content"><p class="loading">加载中...</p></div>
+    </main>
+    <footer class="footer"><p>暖海南 | 服务运营：波纳乐活 | 咨询热线：18976001098</p></footer>
+    <script>
+        console.log('[暖海南] JS 开始执行');
+        
+        async function loadArticle(category) {
+            console.log('[暖海南] 加载:', category);
+            const content = document.getElementById('content');
+            const title = document.getElementById('categoryTitle');
+            
+            try {
+                const keyMap = {yanglao:'yanglao','ai-agent':'ai_agent',hainan:'hainan'};
+                const key = keyMap[category];
+                
+                const res = await fetch('data/index.json');
+                const data = await res.json();
+                console.log('[暖海南] index.json:', data);
+                
+                const article = data.articles[key] || {};
+                title.textContent = article.title || category;
+                
+                if (!article.url) {
+                    content.innerHTML = '<p class="error">暂无内容</p>';
+                    return;
+                }
+                
+                const mdRes = await fetch('data/articles/'+category+'/latest.md');
+                const md = await mdRes.text();
+                console.log('[暖海南] MD 长度:', md.length);
+                
+                // 简单渲染 Markdown
+                let html = md;
+                html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+                html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+                html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+                html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                html = html.replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>');
+                html = html.replace(/\n/g, '<br>');
+                
+                content.innerHTML = html;
+                console.log('[暖海南] 渲染成功');
+                
+            } catch (e) {
+                console.error('[暖海南] 错误:', e);
+                content.innerHTML = '<p class="error">加载失败：'+e.message+'</p><p>请按 F12 查看控制台</p>';
+            }
+        }
+        
+        function switchTab(cat) {
+            console.log('[暖海南] 切换:', cat);
+            document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            loadArticle(cat);
+        }
+        
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[暖海南] DOM 完成');
+            loadArticle('yanglao');
+        });
+    </script>
+</body>
+</html>
