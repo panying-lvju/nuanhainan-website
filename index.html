@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暖海南 - 海南康养旅居资讯</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="暖海南资讯网站 - 专注海南康养旅居，提供养老动态、AI 智能体前沿、海南自贸港政策资讯">
+    <meta name="keywords" content="海南康养，旅居养老，暖海南，盘鹰养老，陵水旅居">
+</head>
+<body>
+    <!-- 移动端汉堡菜单 -->
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- 左侧导航栏 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>🦅 暖海南</h1>
+            <p class="tagline">海南康养旅居资讯</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item active" data-category="yanglao">
+                <span class="icon">👴</span>
+                <span class="text">养老动态</span>
+            </li>
+            <li class="nav-item" data-category="ai-agent">
+                <span class="icon">🤖</span>
+                <span class="text">AI 智能体</span>
+            </li>
+            <li class="nav-item" data-category="hainan">
+                <span class="icon">🌴</span>
+                <span class="text">海南热点</span>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p class="brand">盘鹰养老</p>
+            <p class="contact">📞 18976001098</p>
+            <p class="address">📍 海南省陵水黎安镇·盘鹰书院</p>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent">
+        <!-- 文章列表视图 -->
+        <div class="article-list" id="articleList">
+            <h2 class="category-title" id="categoryTitle">养老动态</h2>
+            <div class="articles" id="articlesContainer">
+                <!-- 文章列表由 JS 动态生成 -->
+            </div>
+        </div>
+
+        <!-- 文章阅读视图 -->
+        <div class="article-detail hidden" id="articleDetail">
+            <button class="back-btn" onclick="backToList()">← 返回列表</button>
+            <article class="article-content" id="articleContent">
+                <!-- 文章内容由 JS 动态渲染 -->
+            </article>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>暖海南 | 服务运营：波纳乐活 | 咨询热线：18976001098</p>
+        <p>© 2026 盘鹰养老 - 深耕海南康养旅居 16 年</p>
+    </footer>
+
+    <script src="js/markdown.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
