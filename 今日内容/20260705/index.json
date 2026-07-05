@@ -1,0 +1,21 @@
+{
+  "date": "2026-07-05",
+  "articles": {
+    "yanglao": {
+      "title": "国内外养老动态",
+      "url": "今日内容/20260705/养老动态.md"
+    },
+    "ai_agent": {
+      "title": "AI智能体与硅谷动态",
+      "url": "今日内容/20260705/AI动态.md"
+    },
+    "hainan": {
+      "title": "海南旅居康养动态",
+      "url": "今日内容/20260705/海南动态.md"
+    },
+    "openclaw": {
+      "title": "OpenClaw全球应用动态",
+      "url": "今日内容/20260705/OpenClaw动态.md"
+    }
+  }
+}
